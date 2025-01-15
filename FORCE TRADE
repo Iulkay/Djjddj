@@ -1,0 +1,64 @@
+local Player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = Player:WaitForChild("PlayerGui")
+
+-- Create Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- This can be removed since we're making it invisible
+frame.BackgroundTransparency = 0.5 -- Set to 1 for invisibility
+frame.Parent = screenGui
+
+-- Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 26, 0, 20)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "Close"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.BackgroundTransparency = 0.8  -- Set to 0.5% visible
+closeButton.Parent = frame
+
+-- Create TextBox for Username
+local usernameBox = Instance.new("TextBox")
+usernameBox.Size = UDim2.new(0, 220, 0, 50)
+usernameBox.Position = UDim2.new(0, 25, 0, 25)
+usernameBox.PlaceholderText = "Enter Username"
+
+-- Make the TextBox invisible
+usernameBox.BackgroundTransparency = 0.7  -- Make background invisible
+usernameBox.TextTransparency = 0.5        -- Make text invisible
+
+usernameBox.Parent = frame
+
+-- Create Send Button
+local sendButton = Instance.new("TextButton")
+sendButton.Size = UDim2.new(0, 100, 0, 50)
+sendButton.Position = UDim2.new(0, 100, 0, 100)
+sendButton.Text = "Send Username"
+sendButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+sendButton.BackgroundTransparency = 0.5 -- Make the button 0.5% visible
+sendButton.Parent = frame
+
+-- Close Button Functionality
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy() -- Close GUI
+end)
+
+-- Send Button Functionality
+sendButton.MouseButton1Click:Connect(function()
+    local username = usernameBox.Text
+    local args = {
+        [1] = "InvSend",
+        [2] = Players:FindFirstChild(username) -- Replace "here" with the entered username
+    }
+    
+    if args[2] then -- Check if player exists
+        workspace.__REMOTES.Game.Trading:InvokeServer(unpack(args))
+    else
+        print("Player not found!") -- Notify if player does not exist
+    end
+end)
